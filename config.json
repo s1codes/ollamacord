@@ -1,0 +1,6 @@
+{
+    "model": "llama2-uncensored",
+    "api": "http://localhost:11434/api/generate",
+    "token": "",
+    "channel_id": ""
+}
