@@ -1,5 +1,11 @@
-const { Client, Events, GatewayIntentBits } = require("discord.js");
-const {model, token, channel_id, api} = require("./config.json");
+const { Client, Events, GatewayIntentBits, ActivityType } = require("discord.js");
+const {api, channel_id, model, token} = require("./config.json");
+const fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
+
+
+const status = "your chats";
+const status_type = "WATCHING";
 
 if (model === "") {
     new Error("You need to provide which Ollama model to use")
@@ -15,9 +21,12 @@ if (api === "") {
 }
 
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildPresences] });
 client.on('ready', () => {
+    client.user.setPresence({ activities: [{ name: 'Your Chats!', type: ActivityType.Watching }], status: 'dnd' });
+    db.run("CREATE TABLE IF NOT EXISTS convo (username TEXT, data TEXT)");
     console.log(`Bot online! User: ${client.user.tag}!`);
 });
 
